@@ -30,7 +30,19 @@ button {
 }
 
 .list {
+display: flex;
+flex-direction: column;
+row-gap: 10px;
   list-style: none;
-  padding: 0;
+  padding: 10px;
   margin: 0;
+}
+
+.item {
+display: flex;
+justify-content: space-between;
+
+  border: 1px solid grey;
+  padding: 10px;
+
 }
