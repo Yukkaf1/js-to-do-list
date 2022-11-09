@@ -1,17 +1,36 @@
-const getItemTemplate = (text) => 
-`<li class = "item">
-<div>
-  <input type="checkbox"/>
-  <span> ${text} </span>
-</div>
-<button type="button">x</button>
-</li>
-`
+import {Item} from './Item.js';
+import {items} from './items.js'
+
 const refs = {
     list: document.querySelector('.list'),
+    form: document.querySelector('.form'),
+
+  };
+
+const render = () => {
+  // const lis = items.map((item) => Item(item));
+
+const lis = items.map(Item);
+
+  refs.list.innerHTML = '';
+  refs.list.insertAdjacentHTML('beforeend', lis.join(''));
+  
 };
 
-const items = ['item 1', 'item 2', 'item 3'];
+const addItem =  (e) => {
+  e.preventDefault();
+  
+  const {value} = e.target.elements.text
+  const payload = {
+    text: value,
+    isDone: false,
+  }
+  
+  refs.form.reset();
+  items.push(payload);
+  render();
+  };
 
-const list = items.map((item) =>getItemTemplate(item));
-refs.list.insertAdjacentHTML('beforeend', list.join(''));
+render();
+
+refs.form.addEventListener('submit', addItem);
