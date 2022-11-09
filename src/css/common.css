@@ -23,17 +23,14 @@ button {
   cursor: pointer;
 }
 
-.gallery-task03 {
-  display: flex;
+.ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  height: 180px;
-  
 }
 
-.image-gallery-task03 {
-  overflow: hidden;
-  margin-left: 10px;
-  height: 100%;
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
