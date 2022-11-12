@@ -1,4 +1,4 @@
-import {Item} from './Item.js';
+import {getItemTemplate} from './getItemTemplate.js';
 import {items} from './items.js'
 
 const refs = {
@@ -10,27 +10,73 @@ const refs = {
 const render = () => {
   // const lis = items.map((item) => Item(item));
 
-const lis = items.map(Item);
+const lis = items.map(getItemTemplate);
 
   refs.list.innerHTML = '';
   refs.list.insertAdjacentHTML('beforeend', lis.join(''));
   
 };
 
-const addItem =  (e) => {
-  e.preventDefault();
+// ==================== ДЛИННО ПОНЯТНО
+
+// const addItem =  (e) => {
+//   e.preventDefault();
   
-  const {value} = e.target.elements.text
+//   const {value} = e.target.elements.text
+//   const payload = {
+//     text: value,
+//     isDone: false,
+//   }
+  
+//   refs.form.reset();
+//   items.push(payload);
+//   render();
+//   };
+
+// render();
+
+// refs.form.addEventListener('submit', addItem);
+
+// ================== КОРОЧЕ ЧИЩЕ
+
+
+const addItem =  (text) => {  
+ 
   const payload = {
-    text: value,
+    text,
     isDone: false,
   }
   
-  refs.form.reset();
   items.push(payload);
-  render();
   };
+
+const handleSubmit = (e) => {
+  const {value} = e.target.elements.text
+
+  e.preventDefault();
+  addItem (value);
+  render();
+  refs.form.reset();
+};
+
 
 render();
 
-refs.form.addEventListener('submit', addItem);
+
+
+refs.form.addEventListener('submit', handleSubmit);
+
+
+
+// ======================= ССЫЛКА РУКАМИ
+// const link = document.createElement('a');
+// link.href ='https://www.facebook.com/';
+// link.textContent = 'Facebook';
+// link.classList.add('link');
+
+// const body = document.querySelector('body');
+// body.appendChild(link);
+
+// console.log(link.outerHTML);
+
+// link.click();
