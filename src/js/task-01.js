@@ -1,18 +1,33 @@
 import {getItemTemplate} from './getItemTemplate.js';
-import {items} from './items.js'
+import {items as importedItems } from './items.js'
+
+let items = importedItems;
+
+const modal = basicLightbox.create(`
+    <div class="modal">
+        <p class="modal-text">
+            Your first lightbox with just a few lines of code.
+            Yes, it's really that simple.
+        </p>
+        <button>Close</buton>
+    </div>
+`)
+
 
 const refs = {
     list: document.querySelector('.list'),
     form: document.querySelector('.form'),
+    modalButton: modal.element().querySelector('button'),
+    modalText: modal.element().querySelector('.modal-text'),
 
   };
 
 const render = () => {
   // const lis = items.map((item) => Item(item));
 
-const lis = items.map(getItemTemplate);
+const lis = items.map(item => getItemTemplate(item));
 
-  refs.list.innerHTML = '';
+  refs.list.innerHTML = ''; // удаляет из DOM
   refs.list.insertAdjacentHTML('beforeend', lis.join(''));
   
 };
@@ -43,30 +58,105 @@ const lis = items.map(getItemTemplate);
 const addItem =  (text) => {  
  
   const payload = {
+    id: uuid.v4(),
     text,
     isDone: false,
+    created: new Date(),
   }
   
   items.push(payload);
   };
 
 const handleSubmit = (e) => {
+  // варианты деструктуризации
+  // const value = e.target.elements.text.value //просто напрямую
+  
+  // const {
+  //   text: {value},
+  // } = e.target.element; // двойная деструктуризация - плохо
+
   const {value} = e.target.elements.text
 
   e.preventDefault();
   addItem (value);
   render();
-  refs.form.reset();
+  refs.form.reset(); // чистим форму
 };
 
+const toggleItem = (id) => {
+items = items.map(item => item.id === id 
+  ? {
+  ...item,
+  isDone: !item.isDone,
+}
+: item);
+
+console.log('toggle', id);
+console.table(items);
+};
+
+const viewItem = (id) => {
+console.log('view', id)
+
+const {created} = items.find(item => item.id === id)
+
+refs.modalText.textContent = created;
+modal.show();
+};
+
+const deleteItem = (id) => {
+console.log('delete', id)
+items = items.filter(item => item.id !== id);
+render();
+};
+
+const handleListClick = (e) => {
+ 
+
+// проверка когда пользователь попал в молоко (попал сам на себя)
+if (e.target === e.currentTraget) return;
+
+const parent = e.target.closest('li');
+const {id} = parent.dataset; // деструктуризация 
+const {action} = e.target.dataset;
+
+switch (action) {
+  case 'toggle':
+    toggleItem(id);
+    break;
+
+  case 'view':
+      viewItem(id);
+      break;
+
+  case 'delete':
+    deleteItem(id);
+    break;
+}
+
+// console.log(e.target);
+// console.log(e.currentTarget);
+// console.log(parent.dataset.id);
+// console.log(id);
+// console.log(action);
+};
 
 render();
 
 
-
+// add event Listener
 refs.form.addEventListener('submit', handleSubmit);
 
+refs.list.addEventListener('click', handleListClick)
 
+refs.modalButton.addEventListener('click', modal.close);
+
+
+//  ============= модалка basicLightbox
+// console.log(modal);
+// setTimeout (() => {
+//   modal.close();}, 2000);
+// console.log(modal.element().querySelector('button'));
 
 // ======================= ССЫЛКА РУКАМИ
 // const link = document.createElement('a');

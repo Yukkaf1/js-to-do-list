@@ -46,3 +46,13 @@ justify-content: space-between;
   padding: 10px;
 
 }
+
+.btn.close {
+  background-color: tomato;
+}
+
+.modal {
+  background-color: #fafafa;
+  padding: 50px;
+  border-radius: 5px;
+}
