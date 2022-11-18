@@ -6,9 +6,8 @@ let items = importedItems;
 const modal = basicLightbox.create(`
     <div class="modal">
         <p class="modal-text">
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
         </p>
+        <img class="modal-img" src="" />
         <button>Close</buton>
     </div>
 `)
@@ -19,6 +18,7 @@ const refs = {
     form: document.querySelector('.form'),
     modalButton: modal.element().querySelector('button'),
     modalText: modal.element().querySelector('.modal-text'),
+    // modalImg: modal.element().querySelector('.modal-img'),
 
   };
 
@@ -101,6 +101,7 @@ console.log('view', id)
 const {created} = items.find(item => item.id === id)
 
 refs.modalText.textContent = created;
+// refs.modalImg.src = '';
 modal.show();
 };
 
